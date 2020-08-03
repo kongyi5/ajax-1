@@ -70,12 +70,32 @@ getJSON.onclick = () => {
   request.open("GET", "/5.json");
   request.onreadystatechange = () => {
     if (request.readyState === 4 && request.status === 200) {
+      console.log(typeof request.response);
       console.log(request.response);
-      const object = JSON.parse(request.response);
-      console.log(object);
+      const bool = JSON.parse(request.response);
+      console.log(typeof bool);
+      console.log(bool);
 
-      myName.textContent = object.name;
+      myName.textContent = bool.name;
     }
   };
+  request.send();
+};
+let n = 1;
+getPage.onclick = (e) => {
+  const request = new XMLHttpRequest();
+  request.open("GET", `/page${n + 1}`);
+  request.onreadystatechange = () => {
+    if (request.readyState === 4 && request.status === 200) {
+      const array = JSON.parse(request.response);
+      array.forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item.id;
+        xxx.appendChild(li);
+      });
+      n += 1;
+    }
+  };
+
   request.send();
 };
