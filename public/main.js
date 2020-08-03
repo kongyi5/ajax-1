@@ -8,7 +8,6 @@ getHTML.onclick = () => {
         div.innerHTML = request.response;
         document.body.appendChild(div);
       } else {
-        console.log(request.status);
         alert("加载 html 失败");
       }
     }
@@ -16,9 +15,22 @@ getHTML.onclick = () => {
   request.send(); // readyState 2
 };
 
+getXML.onclick = () => {
+  const request = new XMLHttpRequest();
+  request.open("GET", "/4.xml");
+  request.onreadystatechange = () => {
+    if (request.readyState === 4 && request.status === 200) {
+      const dom = request.responseXML;
+      const text = dom.getElementsByTagName("warning")[0].textContent;
+      console.log(text.trim());
+    }
+  };
+  request.send();
+};
+
 getCSS.onclick = () => {
   const request = new XMLHttpRequest();
-  request.open("GET", "/style.css");
+  request.open("GET", "/style.css"); // readyState = 1
   request.onreadystatechange = () => {
     console.log(request.readyState);
     if (request.readyState === 4) {
@@ -33,7 +45,7 @@ getCSS.onclick = () => {
       }
     }
   };
-  request.send();
+  request.send(); // readySate = 2
 };
 
 getJS.onclick = () => {
@@ -50,5 +62,20 @@ getJS.onclick = () => {
     document.body.appendChild(script);
   };
   request.onerror = () => {};
+  request.send();
+};
+
+getJSON.onclick = () => {
+  const request = new XMLHttpRequest();
+  request.open("GET", "/5.json");
+  request.onreadystatechange = () => {
+    if (request.readyState === 4 && request.status === 200) {
+      console.log(request.response);
+      const object = JSON.parse(request.response);
+      console.log(object);
+
+      myName.textContent = object.name;
+    }
+  };
   request.send();
 };
